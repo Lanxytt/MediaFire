@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaFire - Download File</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --mf-blue: #0070F0;
+            --mf-dark-blue: #0056b3;
+            --border-gray: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #2e2e2e;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .mobile-frame {
+            background-color: #fff;
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        /* HEADER SUPER MINIMALIS */
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+        
+        .logo img {
+            height: 22px;
+            width: auto;
+        }
+        
+        .header-btns {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-auth {
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            background-color: var(--mf-blue);
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        
+        .btn-login {
+            background: #fff;
+            color: var(--mf-blue);
+            border: 1px solid var(--border-gray);
+        }
+        /* CONTENT */
+        
+        .content {
+            padding: 20px 15px;
+        }
+        /* DOWNLOAD BOX - LOGO DIPERKECIL */
+        
+        .download-box {
+            background-color: var(--mf-blue);
+            border-radius: 4px 4px 0 0;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .file-icon-wrapper {
+            width: 35px;
+            /* Logo ZIP diperkecil */
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-icon-wrapper img {
+            width: 100%;
+            filter: brightness(1.1);
+        }
+        
+        .file-info h1 {
+            font-size: 14px;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+        
+        .file-info p {
+            font-size: 11px;
+            margin: 2px 0 0 0;
+            opacity: 0.8;
+        }
+        
+        .download-bar-dark {
+            background-color: #3d3d3d;
+            padding: 10px;
+            border-radius: 0 0 4px 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            color: #ccc;
+            font-size: 11px;
+            margin-bottom: 25px;
+        }
+        
+        .btn-faster {
+            background-color: var(--mf-blue);
+            color: white;
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 2px;
+            font-weight: 700;
+            font-size: 10px;
+        }
+        /* SECONDARY BUTTONS */
+        
+        .secondary-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .btn-sec {
+            background-color: #f8f8f8;
+            border: 1px solid #eee;
+            padding: 12px;
+            text-align: center;
+            border-radius: 4px;
+            color: #888;
+            font-size: 12px;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        /* INFO BENDERA */
+        
+        .upload-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 5px;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+        
+        .flag-indo {
+            width: 30px;
+            height: 18px;
+            border: 1px solid #ccc;
+            background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
+        }
+        
+        .info-text {
+            font-size: 11px;
+            color: #777;
+            font-weight: 400;
+        }
+        /* IKLAN GAYA REGION/MEDIAFIRE */
+        
+        .ad-region-container {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+            background: #fff;
+        }
+        
+        .ad-region-header {
+            background: #666;
+            color: #fff;
+            font-size: 10px;
+            padding: 5px 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .ad-body {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .ad-blue-button {
+            background-color: #43609c;
+            color: #fff;
+            padding: 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: block;
+            transition: opacity 0.2s;
+        }
+        
+        .ad-blue-button:active {
+            opacity: 0.8;
+        }
+        
+        .ad-title {
+            font-weight: 700;
+            font-size: 15px;
+            display: block;
+        }
+        
+        .ad-sub {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        
+        .recommended-box {
+            display: flex;
+            gap: 12px;
+            text-align: left;
+            text-decoration: none;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .rec-thumb {
+            width: 55px;
+            height: 55px;
+            background: #eee;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .rec-text h4 {
+            font-size: 13px;
+            color: var(--mf-blue);
+            margin: 0;
+        }
+        
+        .rec-text p {
+            font-size: 10px;
+            color: #888;
+            margin: 3px 0 0 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mobile-frame">
+        <header>
+            <div class="logo">
+                <img src="img/mediafire-logo-transparent.png" alt="MediaFire">
+            </div>
+            <div class="header-btns">
+                <a href="#" class="btn-auth">SIGN UP</a>
+                <a href="#" class="btn-auth btn-login">LOG IN</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="download-box" onclick="location.href='index.html'">
+                <div class="file-icon-wrapper">
+                    <img src="https://static.mediafire.com/images/filetype/file-zip-v2.png" alt="zip">
+                </div>
+                <div class="file-info">
+                    <h1>BOCIL VIRAL 18 DETIK...</h1>
+                    <p>Download (27.6MB)</p>
+                </div>
+                <div style="margin-left: auto; opacity: 0.8;">
+                    <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </div>
+            </div>
+
+            <div class="download-bar-dark">
+                <span>Download too slow?</span>
+                <a href="#" class="btn-faster">DOWNLOAD FASTER</a>
+            </div>
+
+            <div class="secondary-actions">
+                <a href="#" class="btn-sec">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>                    Share
+                </a>
+                <a href="#" class="btn-sec">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Save to My Files
+                </a>
+            </div>
+
+            <div class="upload-info">
+                <div class="flag-indo"></div>
+                <div class="info-text">
+                    This file was uploaded from Indonesia on March 9, 2026
+                </div>
+            </div>
+
+            <div class="ad-region-container">
+                <div class="ad-region-header">Advertisement:</div>
+                <div class="ad-body">
+                    <a href="#" class="ad-blue-button">
+                        <span class="ad-title">DOWNLOAD MANAGER PRO</span>
+                        <span class="ad-sub">Fast, Secure & Free Downloads</span>
+                    </a>
+                </div>
+
+                <a href="#" class="recommended-box">
+                    <div class="rec-thumb"></div>
+                    <div class="rec-text">
+                        <h4>Recommended for you</h4>
+                        <p>Get the latest updates for your browser and apps.</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
